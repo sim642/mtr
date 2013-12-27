@@ -66,15 +66,16 @@ extern int DisplayMode;
 void display_detect(int *argc, char ***argv) {
   DisplayMode = DisplayReport;
 
-#ifndef NO_CURSES
-  DisplayMode = DisplayCurses;
-#endif
-
 #ifndef NO_GTK
   if(gtk_detect(argc, argv)) {
     DisplayMode = DisplayGTK;
   }
 #endif
+
+#ifndef NO_CURSES
+  DisplayMode = DisplayCurses;
+#endif
+
 }
 
 
