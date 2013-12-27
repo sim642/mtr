@@ -499,11 +499,7 @@ void mtr_print_scaled(int ms)
 			int color_pair = -1;
 			if (i != 0 && has_colors() == TRUE)
 			{
-				if (i <= ((NUM_FACTORS - 2) / 2))
-					color_pair = 1;
-				else
-					color_pair = 2;
-
+				color_pair = 1 + i / ((NUM_FACTORS - 1) / 3 + 1);
 				attron(COLOR_PAIR(color_pair));
 			}
 
@@ -684,12 +680,8 @@ void mtr_curses_redraw(void)
       int color_pair = -1;
       if (i != 0 && has_colors() == TRUE)
       {
-          if (i <= ((NUM_FACTORS - 2) / 2))
-              color_pair = 1;
-          else
-              color_pair = 2;
-
-          attron(COLOR_PAIR(color_pair));
+		color_pair = 1 + i / ((NUM_FACTORS - 1) / 3 + 1);
+		attron(COLOR_PAIR(color_pair));
       }
 
       printw("%c", block_map[i]);
@@ -718,8 +710,9 @@ void mtr_curses_open(void)
   {
   	start_color();
 	use_default_colors();
-	init_pair(1, COLOR_YELLOW, -1);
-	init_pair(2, COLOR_RED, -1);
+	init_pair(1, COLOR_WHITE, -1);
+	init_pair(2, COLOR_YELLOW, -1);
+	init_pair(3, COLOR_RED, -1);
   }
 }
 
