@@ -669,28 +669,32 @@ void mtr_curses_redraw(void)
     mtr_curses_graph(startstat, max_cols);
 
     printw("\n");
-    attron(A_BOLD);
-    printw("Scale:");
-    attroff(A_BOLD);
-    
-    for (i = 0; i < NUM_FACTORS-1; i++) {
-      //printw("  %c:%d ms", block_map[i], scale[i]/1000);
-      printw("  ");
 
-      int color_pair = -1;
-      if (i != 0 && has_colors() == TRUE)
-      {
-		color_pair = 1 + i / ((NUM_FACTORS - 1) / 3 + 1);
-		attron(COLOR_PAIR(color_pair));
+	if (display_mode == 2)
+	{
+      attron(A_BOLD);
+      printw("Scale:");
+      attroff(A_BOLD);
+      
+      for (i = 0; i < NUM_FACTORS-1; i++) {
+        //printw("  %c:%d ms", block_map[i], scale[i]/1000);
+        printw("  ");
+
+        int color_pair = -1;
+        if (i != 0 && has_colors() == TRUE)
+        {
+          color_pair = 1 + i / ((NUM_FACTORS - 1) / 3 + 1);
+          attron(COLOR_PAIR(color_pair));
+        }
+
+        printw("%c", block_map[i]);
+
+        if (color_pair != -1)
+            attroff(COLOR_PAIR(color_pair));
+
+        printw(":%d ms", scale[i]/1000);
       }
-
-      printw("%c", block_map[i]);
-
-      if (color_pair != -1)
-          attroff(COLOR_PAIR(color_pair));
-
-      printw(":%d ms", scale[i]/1000);
-    }
+	}
   }
 
   refresh();
