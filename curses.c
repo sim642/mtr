@@ -496,7 +496,21 @@ void mtr_print_scaled(int ms)
 
 	for (i = 0; i < NUM_FACTORS; i++) {
 		if (ms <= scale[i]) {
+			int color_pair = -1;
+			if (i != 0 && has_colors() == TRUE)
+			{
+				if (i <= ((NUM_FACTORS - 2) / 2))
+					color_pair = 1;
+				else
+					color_pair = 2;
+
+				attron(COLOR_PAIR(color_pair));
+			}
+
 			printw("%c", block_map[i]);
+
+			if (color_pair != -1)
+				attroff(COLOR_PAIR(color_pair));
 			return;
 		}
 	}
@@ -519,7 +533,7 @@ void mtr_fill_graph(int at, int cols)
 			attroff(A_BOLD);
 		} else {
 			if (display_mode == 1) {
-				if (saved[i] > scale[6]) {
+				if (saved[i] > scale[NUM_FACTORS-2]) {
 					printw("%c", block_map[NUM_FACTORS-1]);
 				} else {
 					printw(".");
@@ -664,7 +678,26 @@ void mtr_curses_redraw(void)
     attroff(A_BOLD);
     
     for (i = 0; i < NUM_FACTORS-1; i++) {
-      printw("  %c:%d ms", block_map[i], scale[i]/1000);
+      //printw("  %c:%d ms", block_map[i], scale[i]/1000);
+      printw("  ");
+
+      int color_pair = -1;
+      if (i != 0 && has_colors() == TRUE)
+      {
+          if (i <= ((NUM_FACTORS - 2) / 2))
+              color_pair = 1;
+          else
+              color_pair = 2;
+
+          attron(COLOR_PAIR(color_pair));
+      }
+
+      printw("%c", block_map[i]);
+
+      if (color_pair != -1)
+          attroff(COLOR_PAIR(color_pair));
+
+      printw(":%d ms", scale[i]/1000);
     }
   }
 
@@ -680,6 +713,14 @@ void mtr_curses_open(void)
 
   mtr_curses_init();
   mtr_curses_redraw();
+
+  if (has_colors() == TRUE)
+  {
+  	start_color();
+	use_default_colors();
+	init_pair(1, COLOR_YELLOW, -1);
+	init_pair(2, COLOR_RED, -1);
+  }
 }
 
 
