@@ -524,9 +524,15 @@ void mtr_fill_graph(int at, int cols)
 		if (saved[i] == -2) {
 			printw(" ");
 		} else if (saved[i] == -1) {
-			attron(A_BOLD);
-			printw("?");
-			attroff(A_BOLD);
+			if (display_mode == 2) {
+				attron(A_BOLD | COLOR_PAIR(4));
+				printw("?");
+				attroff(A_BOLD | COLOR_PAIR(4));
+			} else {
+				attron(A_BOLD);
+				printw("?");
+				attroff(A_BOLD);
+			}
 		} else {
 			if (display_mode == 1) {
 				if (saved[i] > scale[NUM_FACTORS-2]) {
@@ -714,9 +720,10 @@ void mtr_curses_open(void)
   {
   	start_color();
 	use_default_colors();
-	init_pair(1, COLOR_WHITE, -1);
+	init_pair(1, COLOR_GREEN, -1);
 	init_pair(2, COLOR_YELLOW, -1);
 	init_pair(3, COLOR_RED, -1);
+	init_pair(4, COLOR_CYAN, -1);
   }
 }
 
